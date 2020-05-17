@@ -1,6 +1,4 @@
-"""
-    Toda función que responde a los comandos del bot lleva los parámetros update y context
-"""
+# Toda función que responde a los comandos del bot lleva los parámetros update y context
 
 
 def start(update, context):
