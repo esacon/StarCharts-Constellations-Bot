@@ -96,7 +96,7 @@ def drawConstellations(const, color, img2):
 
 def drawAllConst():
     color = [(0, 255, 255), (255, 0, 255), (255, 255, 0), (0, 255, 0), (0, 0, 255), (34, 126, 230), (7, 182, 23),
-             (255, 0, 0)]
+             (254, 19, 188)]
     names = ['boyero', 'casiopea', 'cygnet', 'geminis', 'hydra', 'osamayor', 'osamenor', 'cazo']
     i = 0
     for name in names:
