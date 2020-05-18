@@ -4,6 +4,7 @@ import cv2
 
 
 stars = []
+names = ['boyero', 'casiopea', 'cazo', 'cygnet', 'geminis', 'hydra', 'osamayor', 'osamenor']
 img = np.zeros((1000, 1000, 3), dtype=np.uint8)
 
 
@@ -36,7 +37,6 @@ def readConstellation(file):
 
 
 def find_constellation(name):
-    names = ['boyero', 'casiopea', 'cazo', 'cygnet', 'geminis', 'hydra', 'osamayor', 'osamenor']
     files = [open('Datos/Constelaciones/Boyero.txt', 'r'), open('Datos/Constelaciones/Casiopea.txt', 'r'),
              open('Datos/Constelaciones/Cazo.txt', 'r'), open('Datos/Constelaciones/Cygnet.txt', 'r'),
              open('Datos/Constelaciones/Geminis.txt', 'r'), open('Datos/Constelaciones/Hydra.txt', 'r'),
@@ -61,8 +61,10 @@ def drawStars():
         x, y = cart_to_pixel(x, y)
         cv2.rectangle(img, (x, y), (x, y), (255, 255, 255), star_size)
 
+    cv2.imwrite("Images/stars.png", img)
 
-def drawConstellations(const, color):
+
+def drawConstellations(const, color, img2):
     i = 0
     while i < len(const[0]):
         j = 0
@@ -85,30 +87,37 @@ def drawConstellations(const, color):
             j += 1
         x, y = cart_to_pixel(float(pos[0]), float(pos[1]))
         x1, y1 = cart_to_pixel(float(pos[2]), float(pos[3]))
-        cv2.line(img, (x, y), (x1, y1), color, 1)
+        cv2.line(img2, (x, y), (x1, y1), color, 1)
         if len(pos) > 4:
             x2, y2 = cart_to_pixel(float(pos[4]), float(pos[5]))
-            cv2.line(img, (x1, y1), (x2, y2), color, 1)
+            cv2.line(img2, (x1, y1), (x2, y2), color, 1)
         i += 1
 
 
 def drawAllConst():
-    names = ['boyero', 'casiopea', 'cygnet', 'geminis', 'hydra', 'osamayor', 'cazo', 'osamenor']
-    color = [(0, 255, 255), (255, 0, 255), (255, 255, 0), (0, 255, 0), (0, 0, 255), (34, 126, 230), (152, 60, 125),
+    color = [(0, 255, 255), (255, 0, 255), (255, 255, 0), (0, 255, 0), (0, 0, 255), (34, 126, 230), (7, 182, 23),
              (255, 0, 0)]
+    names = ['boyero', 'casiopea', 'cygnet', 'geminis', 'hydra', 'osamayor', 'osamenor', 'cazo']
     i = 0
     for name in names:
         const = find_constellation(name)
-        drawConstellations(const, color[i]) if const != -1 else print('No se econtró el nombre de la constelación.')
+        drawConstellations(const, color[i], img)
         i += 1
+
+    cv2.imwrite("Images/space.png", img)
+
+
+def generateConst():
+    for name in names:
+        img2 = np.copy(img)
+        drawConstellations(find_constellation(name), (0, 255, 255), img2)
+        const_name = "Images/" + name.lower() + ".png"
+        cv2.imwrite(const_name, img2)
 
 
 if __name__ == '__main__':
     readStars()
     drawStars()
-    name = "cazo"
-    const = find_constellation(name)
-    # drawConstellations(const, (0, 255, 255)) if const != -1 else print('No se econtró el nombre de la constelación.')
+    generateConst()
     drawAllConst()
-    cv2.imwrite("space.png", img)
 
