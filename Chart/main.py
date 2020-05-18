@@ -62,7 +62,7 @@ def drawStars():
         cv2.rectangle(img, (x, y), (x, y), (255, 255, 255), star_size)
 
 
-def drawConstellations(consts):
+def drawConstellations(const, color):
     i = 0
     while i < len(const[0]):
         j = 0
@@ -78,24 +78,37 @@ def drawConstellations(consts):
                         if const[0][i][j] == star[6][0] or const[0][i][j] == star[6][1]:
                             pos.append(star[0])
                             pos.append(star[1])
+                        if len(star[6]) > 2:
+                            if const[0][i][j] == star[6][2]:
+                                pos.append(star[0])
+                                pos.append(star[1])
             j += 1
         x, y = cart_to_pixel(float(pos[0]), float(pos[1]))
         x1, y1 = cart_to_pixel(float(pos[2]), float(pos[3]))
-        cv2.line(img, (x, y), (x1, y1), (0, 255, 255), 1)
+        cv2.line(img, (x, y), (x1, y1), color, 1)
+        if len(pos) > 4:
+            x2, y2 = cart_to_pixel(float(pos[4]), float(pos[5]))
+            cv2.line(img, (x1, y1), (x2, y2), color, 1)
+        i += 1
+
+
+def drawAllConst():
+    names = ['boyero', 'casiopea', 'cygnet', 'geminis', 'hydra', 'osamayor', 'cazo', 'osamenor']
+    color = [(0, 255, 255), (255, 0, 255), (255, 255, 0), (0, 255, 0), (0, 0, 255), (34, 126, 230), (152, 60, 125),
+             (255, 0, 0)]
+    i = 0
+    for name in names:
+        const = find_constellation(name)
+        drawConstellations(const, color[i]) if const != -1 else print('No se econtró el nombre de la constelación.')
         i += 1
 
 
 if __name__ == '__main__':
     readStars()
     drawStars()
-    names = ['boyero', 'casiopea', 'cazo', 'cygnet', 'geminis', 'hydra', 'osamayor', 'osamenor']
-    for name in names:
-        try:
-            const = find_constellation(name)
-            drawConstellations(const) if const != -1 else print('No se econtró el nombre de la constelación.')
-        except Exception as e:
-            print("F")
-    # rot = cv2.getRotationMatrix2D((500, 500), 180, 1.0)
-    # rot = cv2.warpAffine(img, rot, (1000, 1000))
+    name = "cazo"
+    const = find_constellation(name)
+    # drawConstellations(const, (0, 255, 255)) if const != -1 else print('No se econtró el nombre de la constelación.')
+    drawAllConst()
     cv2.imwrite("space.png", img)
 
