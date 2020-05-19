@@ -11,7 +11,13 @@ def main():
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler('start', bot.start))
+    dispatcher.add_handler(CommandHandler('menu', bot.menu))
+    dispatcher.add_handler(CallbackQueryHandler(bot.menubutton, pattern="m1"))
+    dispatcher.add_handler(CallbackQueryHandler(bot.menubutton, pattern="m2"))
+    dispatcher.add_handler(CallbackQueryHandler(bot.menubutton, pattern="m3"))
+
     dispatcher.add_handler(CommandHandler('help', bot.help))
+
     dispatcher.add_handler(CommandHandler("constelaciones", bot.constelaciones))
     dispatcher.add_handler(CallbackQueryHandler(bot.button))
     dispatcher.add_handler(CommandHandler("stars", bot.stars))
