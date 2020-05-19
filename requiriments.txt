@@ -1,2 +1,5 @@
 telegram
-telegram-bot-installer
+python-telegram-bot
+numpy
+cv2
+opencv-python
